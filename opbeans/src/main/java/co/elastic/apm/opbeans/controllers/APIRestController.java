@@ -53,33 +53,22 @@ class APIRestController{
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     private final OrderRepository orderRepository;
-    private Tracer tracer;
 
     @Autowired
     APIRestController(ProductRepository productRepository, CustomerRepository customerRepository, OrderRepository orderRepository) {
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
-        tracer = new ElasticApmTracer();
     }
 
     @GetMapping(value = "/products")
-    @CaptureSpan("Annotation products span")
     Collection<ProductList> products() {
-        ElasticApm.currentSpan().addTag("foo", "bar");
         return productRepository.findAllList();
     }
 
     @GetMapping("/products/{productId}")
     ProductDetail product(@PathVariable long productId) {
-        final Span span = tracer.buildSpan("OpenTracing product span")
-                .withTag("productId", Long.toString(productId))
-                .start();
-        try (Scope scope = tracer.scopeManager().activate(span, false)) {
-            return productRepository.getOneDetail(productId);
-        } finally {
-            span.finish();
-        }
+        return productRepository.getOneDetail(productId);
     }
 
     @GetMapping("/products/{productId}/customers")
