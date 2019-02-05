@@ -19,6 +19,10 @@
  */
 package co.elastic.apm.opbeans;
 
+// Need these for exercises
+import io.opentracing.util.GlobalTracer;
+import co.elastic.apm.opentracing.ElasticApmTracer;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
