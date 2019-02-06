@@ -8,12 +8,12 @@ ARG JAVA_AGENT_REPO=elastic/apm-agent-java
 
 WORKDIR /usr/src/java-app
 
-#pull down the agent
+#build the agent
 WORKDIR /usr/src/java-agent-code
-RUN curl -L https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=co.elastic.apm&a=elastic-apm-agent&v=LATEST
-# RUN mvn -q -B package -DskipTestss
-# RUN export JAVA_AGENT_BUILT_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec) \
-    # && cp -v /usr/src/java-agent-code/elastic-apm-agent/target/elastic-apm-agent-${JAVA_AGENT_BUILT_VERSION}.jar /usr/src/java-app/elastic-apm-agent.jar
+RUN curl -L https://github.com/$JAVA_AGENT_REPO/archive/$JAVA_AGENT_BRANCH.tar.gz | tar --strip-components=1 -xz
+RUN mvn -q -B package -DskipTests
+RUN export JAVA_AGENT_BUILT_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec) \
+    && cp -v /usr/src/java-agent-code/elastic-apm-agent/target/elastic-apm-agent-${JAVA_AGENT_BUILT_VERSION}.jar /usr/src/java-app/elastic-apm-agent.jar
 
 #Bring the latest frontend code
 COPY --from=opbeans/opbeans-frontend:latest /app/build src/main/resources/public
