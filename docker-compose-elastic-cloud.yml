@@ -2,7 +2,6 @@ version: "2.1"
 services:
   opbeans-java:
     build: .
-    image: opbeans/opbeans-java:latest
     ports:
     - "${OPBEANS_SERVER_PORT:-8000}:8000"
     logging:
@@ -14,7 +13,7 @@ services:
     - ELASTIC_APM_SERVICE_NAME=${ELASTIC_APM_SERVICE_NAME:-opbeans-java}
     - ELASTIC_APM_SERVER_URL=${ELASTIC_APM_SERVER_URL:-http://apm-server:8200}
     - ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN}
-    - ELASTIC_APM_JS_SERVER_URL=${ELASTIC_APM_JS_SERVER_URL:-http://apm-server:8200}
+    - ELASTIC_APM_JS_SERVER_URL=${ELASTIC_APM_SERVER_URL:-http://apm-server:8200}
     - ELASTIC_APM_APPLICATION_PACKAGES=co.elastic.apm.opbeans
     - OPBEANS_SERVER_PORT=${OPBEANS_SERVER_PORT:-8000}
     - ELASTIC_APM_TRACE_METHODS=${ELASTIC_APM_TRACE_METHODS}
