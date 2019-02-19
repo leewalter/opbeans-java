@@ -19,7 +19,7 @@ RUN mvn -q -B package -DskipTests
 RUN cp -v /usr/src/java-code/opbeans/target/*.jar /usr/src/java-app/app.jar
 
 #fetch the agent
-RUN curl -L "https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=co.elastic.apm&a=elastic-apm-agent&v=LATEST" > /usr/src/java-app/elastic-apm-agent.jar
+RUN curl -Lo /usr/src/java-app/elastic-apm-agent.jar "https://search.maven.org/remotecontent?filepath=co/elastic/apm/elastic-apm-agent/1.4.0/elastic-apm-agent-1.4.0.jar"
 
 #Run application Stage
 #We only need java
